@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UWON Writing Task 2 每日打卡任务</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom right, #5cb1a6, #6dc1b5);
+      background-attachment: fixed;
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+    }
+
+    .page-title {
+      text-align: center;
+      font-size: 26px;
+      color: #ffffff;
+      margin-top: 30px;
+      margin-bottom: 10px;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .day-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+
+    .label {
+      font-weight: bold;
+      color: #555;
+      margin-top: 6px;
+    }
+
+    .lesson-link {
+      color: #1976d2;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .lesson-link:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: 16px;
+      }
+      .day-title {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1 class="page-title">UWON Writing Task 2 每日打卡任务</h1>
+
+  <div class="container" id="plan-container"></div>
+
+  <script>
+    const totalTasks = 20;
+    const totalDays = 50;
+    const reviewOffsets = [1, 2, 6, 14, 29];
+
+    // 任务链接列表（Day 1 ~ Day 20）
+    const taskLinks = {};
+    for (let i = 1; i <= 20; i++) {
+      const dayStr = i.toString().padStart(2, '0');
+      taskLinks[i] = `https://uwonacademy.github.io/task2-day${i}/`;
+    }
+
+    const container = document.getElementById('plan-container');
+
+    for (let day = 1; day <= totalDays; day++) {
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      const dayTitle = document.createElement('div');
+      dayTitle.className = 'day-title';
+      dayTitle.textContent = `第 ${day} 天`;
+      card.appendChild(dayTitle);
+
+      // 新任务
+      const lessonLabel = document.createElement('div');
+      lessonLabel.className = 'label';
+      lessonLabel.textContent = '新任务：';
+      card.appendChild(lessonLabel);
+
+      const lessonContent = document.createElement('div');
+      if (day <= totalTasks) {
+        const url = taskLinks[day];
+        lessonContent.innerHTML = `<a class="lesson-link" href="${url}" target="_blank">Task 2 - Day ${day}</a>`;
+      } else {
+        lessonContent.textContent = '—';
+      }
+      card.appendChild(lessonContent);
+
+      // 复习任务
+      const reviewLabel = document.createElement('div');
+      reviewLabel.className = 'label';
+      reviewLabel.textContent = '复习内容：';
+      card.appendChild(reviewLabel);
+
+      const reviewContent = document.createElement('div');
+      const reviews = [];
+
+      for (let i = 1; i <= totalTasks; i++) {
+        for (let r = 0; r < reviewOffsets.length; r++) {
+          if (i + reviewOffsets[r] === day) {
+            const url = taskLinks[i];
+            reviews.push(`<a class="lesson-link" href="${url}" target="_blank">Task 2 - Day ${i}（第${r + 1}次复习）</a>`);
+          }
+        }
+      }
+
+      reviewContent.innerHTML = reviews.length ? reviews.join('， ') : '—';
+      card.appendChild(reviewContent);
+
+      container.appendChild(card);
+    }
+  </script>
+</body>
+</html>
